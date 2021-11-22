@@ -5,6 +5,10 @@
  */
 package br.com.infox.telas;
 
+import java.text.DateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Acer
@@ -47,6 +51,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setTitle("X - Sistema para controle de OS");
         setPreferredSize(new java.awt.Dimension(915, 523));
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         javax.swing.GroupLayout DesktopLayout = new javax.swing.GroupLayout(Desktop);
         Desktop.setLayout(DesktopLayout);
@@ -84,11 +93,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         MenCadUsu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK));
         MenCadUsu.setText("Usuários");
+        MenCadUsu.setEnabled(false);
         MenCad.add(MenCadUsu);
 
         Menu.add(MenCad);
 
         MenRel.setText("Relatório");
+        MenRel.setEnabled(false);
 
         MenRelSer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
         MenRelSer.setText("Serviços");
@@ -100,6 +111,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         MenAjuSob.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.event.InputEvent.ALT_MASK));
         MenAjuSob.setText("Sobre");
+        MenAjuSob.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenAjuSobActionPerformed(evt);
+            }
+        });
         MenAju.add(MenAjuSob);
 
         Menu.add(MenAju);
@@ -108,6 +124,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         MenOpcSai.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         MenOpcSai.setText("Sair");
+        MenOpcSai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenOpcSaiActionPerformed(evt);
+            }
+        });
         MenOpc.add(MenOpcSai);
 
         Menu.add(MenOpc);
@@ -157,6 +178,28 @@ public class TelaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_MenCadOsActionPerformed
 
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // as linhas abaixo substituem a label lblData pela data atual do
+        //sistema
+        Date data = new Date();
+        DateFormat formatador = DateFormat.getDateInstance(DateFormat.SHORT);
+        lblData.setText(formatador.format(data));
+    }//GEN-LAST:event_formWindowActivated
+
+    private void MenOpcSaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenOpcSaiActionPerformed
+        // exibe uma caixa de diálogo
+        int sair = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja sair?", "Atenção", JOptionPane.YES_NO_OPTION);
+        if(sair ==JOptionPane.YES_OPTION){
+            System.exit(0);
+        }
+    }//GEN-LAST:event_MenOpcSaiActionPerformed
+
+    private void MenAjuSobActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenAjuSobActionPerformed
+        // chamando a tela sobre
+        TelaSobre sobre = new TelaSobre();
+        sobre.setVisible(true);
+    }//GEN-LAST:event_MenAjuSobActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -199,10 +242,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu MenCad;
     private javax.swing.JMenuItem MenCadCli;
     private javax.swing.JMenuItem MenCadOs;
-    private javax.swing.JMenuItem MenCadUsu;
+    public static javax.swing.JMenuItem MenCadUsu;
     private javax.swing.JMenu MenOpc;
     private javax.swing.JMenuItem MenOpcSai;
-    private javax.swing.JMenu MenRel;
+    public static javax.swing.JMenu MenRel;
     private javax.swing.JMenuItem MenRelSer;
     private javax.swing.JMenuBar Menu;
     private javax.swing.JLabel jLabel1;
