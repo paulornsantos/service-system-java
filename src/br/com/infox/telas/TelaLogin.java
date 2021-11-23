@@ -7,6 +7,7 @@ package br.com.infox.telas;
 
 import java.sql.*;
 import br.com.infox.dal.ModuloConexao;
+import java.awt.Color;
 import javax.swing.JOptionPane;
 
 /**
@@ -34,9 +35,24 @@ public class TelaLogin extends javax.swing.JFrame {
 
             //se existir usuário e senha correspondente
             if (rs.next()) {
+                // a linha abaixo obtem o conteúdo do campo perfil da tabela tbusuario
+                String perfil = rs.getString(6);
+                // a estrutura abaixo faz o tratamento do perfil do usuario
+                if(perfil.equals("admin")){
                 TelaPrincipal principal = new TelaPrincipal();
                 principal.setVisible(true);
+                TelaPrincipal.MenRel.setEnabled(true);
+                TelaPrincipal.MenCadUsu.setEnabled(true);
+                TelaPrincipal.lblUsuario.setText(rs.getString(2));
+                TelaPrincipal.lblUsuario.setForeground(Color.red);
                 this.dispose();
+                }else{
+                TelaPrincipal principal = new TelaPrincipal();
+                principal.setVisible(true);
+                TelaPrincipal.lblUsuario.setText(rs.getString(2));
+                this.dispose();
+                }
+                
                 conexao.close();
 
             } else {
