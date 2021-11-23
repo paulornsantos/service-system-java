@@ -9,13 +9,55 @@ package br.com.infox.telas;
  *
  * @author Acer
  */
+
+import java.sql.*;
+import br.com.infox.dal.ModuloConexao;
+import javax.swing.JOptionPane;
+
 public class TelaUsuario extends javax.swing.JInternalFrame {
+    
+    Connection conexao = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
 
     /**
      * Creates new form TelaUsuario
      */
     public TelaUsuario() {
         initComponents();
+        conexao = ModuloConexao.conector();
+        
+    }
+    
+    private void limparCampos(){
+        txtUsuNome.setText(null);
+        txtUsuFone.setText(null);
+        txtUsuLogin.setText(null);
+        txtUsuSenha.setText(null);
+        cboUsuPerfil.setSelectedItem(null);
+        
+    }
+    
+    private void consultar(){
+        String sql = "select * from tbusuarios where iduser=?";
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, txtUsuId.getText());
+            rs=pst.executeQuery();
+            if (rs.next()) {
+                txtUsuNome.setText(rs.getString(2));
+                txtUsuFone.setText(rs.getString(3));
+                txtUsuLogin.setText(rs.getString(4));
+                txtUsuSenha.setText(rs.getString(5));
+                cboUsuPerfil.setSelectedItem(rs.getString(6));
+            } else {
+                JOptionPane.showMessageDialog(null, "Usuário não cadastrado");
+                limparCampos();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
     }
 
     /**
@@ -101,6 +143,11 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         btmUsuRead.setToolTipText("Consultar");
         btmUsuRead.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btmUsuRead.setPreferredSize(new java.awt.Dimension(80, 80));
+        btmUsuRead.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btmUsuReadActionPerformed(evt);
+            }
+        });
 
         btnUsuUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/update.png"))); // NOI18N
         btnUsuUpdate.setToolTipText("Alterar");
@@ -217,6 +264,11 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     private void cboUsuPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboUsuPerfilActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cboUsuPerfilActionPerformed
+
+    private void btmUsuReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btmUsuReadActionPerformed
+        // chamando o método consultar
+        consultar();
+    }//GEN-LAST:event_btmUsuReadActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
