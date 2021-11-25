@@ -70,7 +70,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
             pst.setString(6, cboUsuPerfil.getSelectedItem().toString());
 
             //validação dos campos obrigatórios
-            if ((txtUsuId.getText().isEmpty()) ||(txtUsuNome.getText().isEmpty())||(txtUsuLogin.getText().isEmpty())||(txtUsuSenha.getText().isEmpty())) {
+            if ((txtUsuId.getText().isEmpty()) || (txtUsuNome.getText().isEmpty()) || (txtUsuLogin.getText().isEmpty()) || (txtUsuSenha.getText().isEmpty())) {
                 JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios");
             } else {
 
@@ -83,6 +83,33 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                 }
             }
 
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    private void alterar() {
+        String sql = "update tbusuarios set usuario=?, fone=?, login=?, senha=?, perfil=? where iduser=?";
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, txtUsuNome.getText());
+            pst.setString(2, txtUsuFone.getText());
+            pst.setString(3, txtUsuLogin.getText());
+            pst.setString(4, txtUsuSenha.getText());
+            pst.setString(5, cboUsuPerfil.getSelectedItem().toString());
+            pst.setString(6, txtUsuId.getText());
+            if ((txtUsuId.getText().isEmpty()) || (txtUsuNome.getText().isEmpty()) || (txtUsuLogin.getText().isEmpty()) || (txtUsuSenha.getText().isEmpty())) {
+                JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios");
+            } else {
+
+                // a linha abaixo atualiza a tabela usuario com os dados do formulário
+                // a estrutura abaixo é usada para confirmar a alteração dos dados na tabela
+                int adicionado = pst.executeUpdate();
+                if (adicionado > 0) {
+                    JOptionPane.showMessageDialog(null, "Dados do usuário alterados com sucesso");
+                    limparCampos();
+                }
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -182,6 +209,11 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         btnUsuUpdate.setToolTipText("Alterar");
         btnUsuUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnUsuUpdate.setPreferredSize(new java.awt.Dimension(80, 80));
+        btnUsuUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUsuUpdateActionPerformed(evt);
+            }
+        });
 
         btnUsuDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/delete.png"))); // NOI18N
         btnUsuDelete.setToolTipText("Remover");
@@ -303,6 +335,11 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         // chamando o método consultar
         consultar();
     }//GEN-LAST:event_btmUsuReadActionPerformed
+
+    private void btnUsuUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuUpdateActionPerformed
+        // chamando o método alterar
+        alterar();
+    }//GEN-LAST:event_btnUsuUpdateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
